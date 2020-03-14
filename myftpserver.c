@@ -282,7 +282,7 @@ void list_reply(SSL* accept_fd){
 	header.length = htonl(header.length);
 
 
-	printf("header: %d\n",header.length);
+	// printf("header: %d\n",header.length);
 	memset(payload,0,PAYLEN);
 	//strcpy(message_to_client.payload,filelist);
 	if((len=(SSL_write(accept_fd,&header, sizeof(header))))<0){
@@ -466,15 +466,15 @@ void main_loop(unsigned short port){
 	meth = (SSL_METHOD*)SSLv23_method();
 
 	/* Create a SSL_CTX structure */
-	printf("can i create\n");
+	// printf("can i create\n");
 	ctx = SSL_CTX_new(meth);
-		printf("can i create\n");
+		// printf("can i create\n");
 
 	if (!ctx) {
 		ERR_print_errors_fp(stderr);
 		exit(1);
 	}
-	printf("can i create\n");
+	// printf("can i create\n");
 
 	/* Load the server certificate into the SSL_CTX structure */
 	if (SSL_CTX_use_certificate_file(ctx, RSA_SERVER_CERT, SSL_FILETYPE_PEM)
@@ -524,7 +524,7 @@ void main_loop(unsigned short port){
 	memset (&sa_serv, 0, sizeof(sa_serv));
 	sa_serv.sin_family      = AF_INET;
 	sa_serv.sin_addr.s_addr = INADDR_ANY;
-	sa_serv.sin_port        = htons (s_port);          /* Server Port number */
+	sa_serv.sin_port        = htons (port);          /* Server Port number */
 
 	err = bind(listen_sock, (struct sockaddr*)&sa_serv,sizeof(sa_serv));
 	if (err == -1) {
@@ -583,9 +583,9 @@ void main_loop(unsigned short port){
 
 			// terminating the listen socket
 			// close (listen_sock);
-			printf ("Connection from %lx, port %x\n", 
-					(unsigned long) sa_cli.sin_addr.s_addr, 
-					sa_cli.sin_port);
+			// printf ("Connection from %lx, port %x\n", 
+			// 		(unsigned long) sa_cli.sin_addr.s_addr, 
+			// 		sa_cli.sin_port);
 
 			/* ----------------------------------------------- */
 			/* TCP connection is ready. */
@@ -607,7 +607,7 @@ void main_loop(unsigned short port){
 			}
 
 			/* Informational output (optional) */
-			printf("SSL connection using %s\n", SSL_get_cipher (ssl));
+			// printf("SSL connection using %s\n", SSL_get_cipher (ssl));
 
 			if (verify_client == ON) {
 				/* Get the client's certificate (optional) */
@@ -648,6 +648,16 @@ void main_loop(unsigned short port){
 			}
 		}
 	}
+	err = close(sock);
+	if (err == -1) {
+		perror("close");
+		exit(-1);
+	}
+	/* Free the SSL structure */
+	SSL_free(ssl);
+
+	/* Free the SSL_CTX structure */
+	SSL_CTX_free(ctx);
 }
 int main(int argc, char **argv){
 	unsigned short port;

@@ -243,7 +243,7 @@ void list_file(SSL* fd, struct message_s header){
 	if((len=(SSL_write(fd,&header,sizeof(header))))<0){
 		perror("can not send request for list\n");
 	}
-	printf("send the command to server\n");
+	// printf("send the command to server\n");
 	struct message_s message_from_server;
 	// printf("size : %d %d\n",sizeof(message_from_server),sizeof(message_from_server.payload));
 	if((len=(SSL_read(fd,&message_from_server,sizeof(message_from_server))))<0){
@@ -484,8 +484,8 @@ void main_task(in_addr_t ip, unsigned short port)
 
 	memset (&server_addr, '\0', sizeof(server_addr));
 	server_addr.sin_family      = AF_INET;
-	server_addr.sin_port        = htons(s_port);       /* Server Port number */
-	server_addr.sin_addr.s_addr = inet_addr(s_ipaddr); /* Server IP */
+	server_addr.sin_port        = htons(port);       /* Server Port number */
+	server_addr.sin_addr.s_addr = ip; /* Server IP */
 	
 	/* Establish a TCP/IP connection to the SSL client */
 	err = connect(sock, (struct sockaddr*) &server_addr, sizeof(server_addr)); 
@@ -515,7 +515,7 @@ void main_task(in_addr_t ip, unsigned short port)
 	}
 
 	/* Informational output (optional) */
-	printf ("SSL connection using %s\n", SSL_get_cipher (ssl));
+	// printf ("SSL connection using %s\n", SSL_get_cipher (ssl));
 
 	/* Get the server's certificate */
 	server_cert = SSL_get_peer_certificate(ssl);    
@@ -557,7 +557,7 @@ void main_task(in_addr_t ip, unsigned short port)
 	// }
 	// scanf("%s", command);
 	fgets(command,100,stdin);
-	printf("command: %s",command);
+	// printf("command: %s",command);
 	command[strlen(command)-1]='\0';
 	// memset(&addr, 0, sizeof(struct sockaddr_in));
 	// addr.sin_family=AF_INET;
@@ -573,7 +573,7 @@ void main_task(in_addr_t ip, unsigned short port)
 		// gets(command);
 		fgets(command,100,stdin);
 		command[strlen(command)-1]='\0';
-		printf("command: %s\n",command);
+		// printf("command: %s\n",command);
 		// scanf("%s", command);
 	}
 	// printf("what is wrong\n");
