@@ -1,4 +1,4 @@
-LIB =  -lcrypto -lssl
+LIB =  -lcrypto -lssl 
 CC=g++
 .PHONY:  myftpclient myftpserver
 myftpserver: myftpserver.o myftp.o myftpclient
